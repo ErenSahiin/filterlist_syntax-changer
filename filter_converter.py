@@ -1,6 +1,4 @@
 import re
-import tkinter as tk
-from tkinter import filedialog, messagebox
 
 def convert_to_abp_syntax(filter_rule):
     """
@@ -43,50 +41,21 @@ def save_filter_list(filter_list, output_path):
         for rule in filter_list:
             file.write(f"{rule}\n")
 
-def select_input_file():
-    """
-    Prompts user to select an input filter file.
-    """
-    file_path = filedialog.askopenfilename(title="Select Input Filter File", filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
-    if not file_path:
-        messagebox.showerror("Error", "No file selected!")
-        return None
-    return file_path
-
-def select_output_file():
-    """
-    Prompts user to select an output file location.
-    """
-    file_path = filedialog.asksaveasfilename(title="Save Output Filter File", defaultextension=".txt", filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
-    if not file_path:
-        messagebox.showerror("Error", "No file selected for output!")
-        return None
-    return file_path
-
 def process_filters():
     """
     The main function that handles the file selection, conversion, and saving.
     """
-    input_file = select_input_file()
-    if input_file is None:
-        return
-
-    output_file = select_output_file()
-    if output_file is None:
-        return
+    input_file = input("Enter the path to the input filter file: ")
+    output_file = input("Enter the path to save the output filter file: ")
 
     try:
         filter_list = load_filter_list(input_file)
         abp_filter_list = convert_filter_list_to_abp(filter_list)
         save_filter_list(abp_filter_list, output_file)
-        messagebox.showinfo("Success", f"Filters successfully converted and saved to {output_file}")
+        print(f"Filters successfully converted and saved to {output_file}")
     except Exception as e:
-        messagebox.showerror("Error", f"An error occurred: {e}")
+        print(f"An error occurred: {e}")
 
-# Main GUI setup
+# Main entry point
 if __name__ == "__main__":
-    root = tk.Tk()
-    root.withdraw()  # Hide the main window
-
-    # Process filters with GUI prompts
     process_filters()
